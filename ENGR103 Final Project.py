@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import WaveLib as wL
 
 # Reads and imports annual peak discharge data of the willamette river
@@ -13,14 +13,21 @@ for x in range(len(Discharge)):
     discharge_rank[x] = 1 + x
 print(discharge_rank)
 
-# Sorts discharge from greatest to least flow
+# Sorts discharge from the greatest to the least flow
 sorted_discharge = wL.sort_discharge(Discharge)
+inverted_discharge = sorted_discharge[::-1]
 
 # Makes an array of recurrence intervals based on rank array
 recurrence_interval = wL.recurrence_interval(discharge_rank)
 print(recurrence_interval)
 
+lin_reg = np.polyfit(recurrence_interval, inverted_discharge, 1)
+best_fit_line = np.log(lin_reg[0] * recurrence_interval + lin_reg[1])
+
 fig, ax = plt.subplots()
-ax.plot(recurrence_interval, Discharge, linewidth=2.0)
+ax.scatter(recurrence_interval, inverted_discharge, marker='.', color='black')
+ax.plot(recurrence_interval, best_fit_line, color='r')
+plt.ylim(0, 12)
 plt.semilogx()
+
 plt.show()
