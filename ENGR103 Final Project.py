@@ -22,5 +22,5 @@ print(recurrence_interval)
 
 fig, ax = plt.subplots()
 ax.plot(recurrence_interval, Discharge, linewidth=2.0)
-ax.set_yscale('log')
+plt.semilogx()
 plt.show()
